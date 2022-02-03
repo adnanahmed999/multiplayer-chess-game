@@ -2,7 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import {gameSubject, initGame} from "./gameLogic/Game"
 import { useEffect, useState } from "react";
-
+import Board from "./gameLogic/Board";
 
 function App() {
   const [board, setBoard] = useState([])
@@ -15,7 +15,11 @@ function App() {
       subscribe.unsubscribe()
     }
   })
-  return <div></div>;
+  return (
+    <div>
+      <Board board={board}/>
+    </div>
+  )
 }
 
 export default App;
