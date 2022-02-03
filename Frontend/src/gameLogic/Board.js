@@ -13,3 +13,4 @@ export default function Board({ board }) {
     </div>
   );
 }
+    
