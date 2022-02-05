@@ -1,12 +1,12 @@
 import React from "react";
 import { useDrag, DragPreviewImage } from "react-dnd";
 
-export default function Piece({ piece }) {
+export default function Piece({ piece, position }) {
   const { type, color } = piece;
   const [{ isDragging }, drag, preview] = useDrag({
     item: {
       type: "piece",
-      id: `${type}_${color}`,
+      id: `${position}_${type}_${color}`,
     },
     collect: (monitor) => {
       return { isDragging: !!monitor.isDragging() };
