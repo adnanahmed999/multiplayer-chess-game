@@ -6,15 +6,15 @@ import Board from "./gameLogic/Board";
 
 function App() {
   const [board, setBoard] = useState([])
-  useEffect(()=> {
-    initGame()
-    const subscribe = gameSubject.subscribe((observer)=> {
-      setBoard(observer.board)
-    })
-    return ()=> {
-      subscribe.unsubscribe()
-    }
-  })
+  useEffect(() => {
+    initGame();
+    const subscribe = gameSubject.subscribe((observer) => {
+      setBoard(observer.board);
+    });
+    return () => {
+      subscribe.unsubscribe();
+    };
+  }, []);
   return (
     <div className="container">
       <div className="board-container">
