@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import {gameSubject, initGame} from "./gameLogic/Game"
 import { useEffect, useState } from "react";
