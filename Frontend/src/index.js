@@ -5,11 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import MainPage from "./MainPage";
+import RedirectingPage from "./RedirectingPage";
 
 ReactDOM.render(
   <React.StrictMode>
-    <MainPage />
+    <RedirectingPage />
     {/* <DndProvider backend={HTML5Backend}>
       
     </DndProvider> */}
