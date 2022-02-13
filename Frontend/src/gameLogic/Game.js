@@ -34,6 +34,7 @@ export const move = (source, destination, promotion) => {
 const updateGame = (pendingPromotion)=> {
     const newGame = {
         board: chess.board(),
+        turn: chess.turn(),
         pendingPromotion
     }
     gameSubject.next(newGame)

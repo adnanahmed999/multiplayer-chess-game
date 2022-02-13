@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BoardSquare from "./BoardSquare";
+import { playerNumber } from "../connections/socket";
+
 export default function Board({ board }) {
-  
+  const [currBoard, setCurrBoard] = useState([]);
+
+  useEffect(() => {
+    setCurrBoard(playerNumber === 1 ? board.flat() : board.flat().reverse());
+  }, [board, playerNumber]);
+
   const getXYPosition = (i) => {
-    const x = i % 8;
-    const y = 7 - Math.floor(i / 8);
+    const x = playerNumber === 1 ? i % 8 : 7 - (i % 8);
+    const y = playerNumber === 1 ? 7 - Math.floor(i / 8) : Math.floor(i / 8);
     return { x, y };
   };
 
@@ -14,19 +21,21 @@ export default function Board({ board }) {
   };
 
   const getPosition = (i) => {
-    const { x, y } = getXYPosition(i)
-    const letter = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'][
-      x
-    ]
-    return `${letter}${y + 1}`
-  }
+    const { x, y } = getXYPosition(i);
+    const letter = ["a", "b", "c", "d", "e", "f", "g", "h"][x];
+    return `${letter}${y + 1}`;
+  };
 
   return (
     <div className="board">
-      {board.flat().map((piece, i) => {
+      {currBoard.map((piece, i) => {
         return (
           <div key={i} className="square">
-            <BoardSquare piece={piece} isBlack={isBlack(i)}  position={getPosition(i)} />
+            <BoardSquare
+              piece={piece}
+              isBlack={isBlack(i)}
+              position={getPosition(i)}
+            />
           </div>
         );
       })}
