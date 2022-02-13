@@ -1,18 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import RedirectingPage from "./RedirectingPage";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import App from "./App";
 
 ReactDOM.render(
   <React.StrictMode>
-    <RedirectingPage />
-    {/* <DndProvider backend={HTML5Backend}>
-      
-    </DndProvider> */}
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );
