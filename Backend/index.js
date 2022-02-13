@@ -22,6 +22,7 @@ const clientRooms = {};
 io.on("connection", (client) => {
   client.on("newGame", handleNewGame);
   client.on("joinGame", handleJoinGame);
+  client.on("movePiece",handleMovePiece);
 
   function handleNewGame() {
     // Genertating a unique roomName
@@ -58,8 +59,15 @@ io.on("connection", (client) => {
     client.join(roomName);
     clientRooms[client.id] = roomName;
     client.number = 2;
+    client.emit("init", { playerNumber: 2, clientID: client.id, roomName });
     io.sockets.in(roomName).emit("bothJoined");
   }
+
+  function handleMovePiece(moveDetails) {
+    //console.log(moveDetails)
+    io.sockets.in(clientRooms[client.id]).emit('tryThisMove',moveDetails)
+  }
+
 });
 
 server.listen(PORT, () => {

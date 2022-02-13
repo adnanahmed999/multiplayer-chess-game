@@ -8,34 +8,38 @@ const chess = new Chess()
 
 export const gameSubject = new BehaviorSubject()
 
-export const initGame = ()=> {
-    updateGame()
+export function initGame() {
+  updateGame()
 }
 
-export const handleMove = (source, destination) => {
+export function handleMove(moveDetails) {
+  //console.log("here1")
+  const from = moveDetails.from
+  const to = moveDetails.to
+  const isThisMoveForPromotion = moveDetails.isThisMoveForPromotion
+  const { pendingPromotion } = gameSubject.getValue()
   const promotions = chess.moves({ verbose: true }).filter(m => m.promotion)
-  if (promotions.some(p => `${p.from}:${p.to}` === `${source}:${destination}`)) {
-      const pendingPromotion = { from: source, to: destination, color: promotions[0].color }
-      updateGame(pendingPromotion)
+  if (isThisMoveForPromotion) {
+    chess.move({ from, to, promotion: moveDetails.piece })
+    updateGame()
+    return
+  } else if (pendingPromotion) {
+    return
+  } else if (promotions.some(p => `${p.from}:${p.to}` === `${from}:${to}`)) {
+    const pendingPromotion = { from, to, color: promotions[0].color }
+    updateGame(pendingPromotion)
+    return
+  } else {
+    chess.move({ from, to })
+    updateGame()
   }
-  const {pendingPromotion} = gameSubject.getValue();
-  if(!pendingPromotion) {
-    move(source, destination);
+}
+
+function updateGame(pendingPromotion) {
+  const newGame = {
+    board: chess.board(),
+    turn: chess.turn(),
+    pendingPromotion
   }
-};
-
-export const move = (source, destination, promotion) => {
-  const moveOject = {from: source, to: destination};
-  if(promotion) moveOject.promotion = promotion
-  chess.move(moveOject);
-  updateGame();
-};
-
-const updateGame = (pendingPromotion)=> {
-    const newGame = {
-        board: chess.board(),
-        turn: chess.turn(),
-        pendingPromotion
-    }
-    gameSubject.next(newGame)
+  gameSubject.next(newGame)
 }
