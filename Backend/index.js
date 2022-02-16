@@ -23,6 +23,9 @@ io.on("connection", (client) => {
   client.on("newGame", handleNewGame);
   client.on("joinGame", handleJoinGame);
   client.on("movePiece",handleMovePiece);
+  client.on('callUser', handleCallUser)
+  client.on('acceptCall', handleAcceptCall)
+  client.on('sendOtherPlayerClientID', handleSendClientID)
 
   function handleNewGame() {
     // Genertating a unique roomName
@@ -66,6 +69,19 @@ io.on("connection", (client) => {
   function handleMovePiece(moveDetails) {
     //console.log(moveDetails)
     io.sockets.in(clientRooms[client.id]).emit('tryThisMove',moveDetails)
+  }
+
+  function handleCallUser(data) {
+    io.to(data.userToCall).emit('hey', {signal: data.signalData, from: data.from});
+  }
+
+  function handleAcceptCall(data) {
+      io.to(data.to).emit('callAccepted', data.signal);
+  }
+
+  function handleSendClientID(roomName) {
+    // console.log("rn", roomName)
+    client.broadcast.emit('otherPlayerClientID',client.id)
   }
 
 });

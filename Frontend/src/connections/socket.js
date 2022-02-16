@@ -6,6 +6,7 @@ const socket = io(ENDPOINT);
 var playerNumber;
 var roomName;
 var myID; // clientID of the user
+var otherPlayerID
 
 socket.on("init", (detailsObject) => {
   playerNumber = detailsObject.playerNumber;
@@ -13,4 +14,9 @@ socket.on("init", (detailsObject) => {
   roomName = detailsObject.roomName;
 });
 
-export { socket, playerNumber, roomName, myID };
+socket.on('otherPlayerClientID', clientID => {
+  otherPlayerID = clientID
+  console.log('down', otherPlayerID)
+})
+
+export { socket, playerNumber, roomName, otherPlayerID, myID };

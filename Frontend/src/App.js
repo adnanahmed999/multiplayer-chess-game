@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { socket } from "./connections/socket";
+import VideoCall from "./connections/VideoCall";
 import LandingPage from "./LandingPage";
 import LaunchGame from "./LaunchGame";
 
@@ -41,6 +42,11 @@ export default function RedirectingPage() {
     socket.on("opponentDisconnected", handleOpponentDisconnected);
   }, []);
 
+  useEffect(()=> {
+    if(bothJoined) 
+      socket.emit("sendOtherPlayerClientID", roomName);
+  },[bothJoined])
+
   return (
     <>
       {opponentDisconnected ? (
@@ -50,7 +56,10 @@ export default function RedirectingPage() {
       ) : gotTooManyPlayers ? (
         <div>Got too many players</div>
       ) : bothJoined ? (
-        <LaunchGame />
+        <div className="mainDiv">
+          <VideoCall className="mainDiv-Child" />
+          <LaunchGame className="mainDiv-Child" />
+          </div>
       ) : gotTheRoomName ? (
         <div>{roomName}</div>
       ) : (
